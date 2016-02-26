@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Awesome Mix</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static "jquery-ui.css" %}" type="text/css" media="all" />
+    <script src="{% static "d3.v3.min.js" %}"></script>
+    <script src="{% static "jquery.min.js" %}"></script>
+    <script src="{% static "jquery-ui.min.js" %}"></script>
+    <script src="{% static "split.js" %}"></script>
+    <script src="{% static "knockout-3.4.0.js" %}"></script>
+
+    <script src="{% static "trail.js" %}"></script>
+    <link rel="stylesheet" href="{% static "split.css" %}"/>
+    <link rel="stylesheet" href="{% static "trail.css" %}"/>
+</head>
+<body>
+    <div id="title">
+        Related to the Selected<div id="weight"></div>Related to the Topic
+    </div>
+    <div id="content">
+        <div id="detail" style="width: 30%; float:left; height:100%"></div>
+        <div style="width: 70%; height:100%; float:left">
+            <div id="current" class="split">
+                <div id='topic_overview' style="float: left; width:5%; height: 100%"></div>
+                <div id="trail" class="split split-horizontal" style="overflow: hidden">
+                    <div style="position: relative; width: 200%" id="wrap"></div>
+                </div>
+                <div id="overview" class="split split-horizontal">
+                    <div id="overview-wrap" style="width: 100%; height: 100%"></div>
+                </div>
+            </div>
+            <div id="history" class="split"></div>
+        </div>
+    </div>
+
+    <script>
+        Split(['#current', '#history'], {
+            sizes:[80,20],
+            direction: 'vertical'
+        });
+
+        Split(['#trail', '#overview'], {
+             sizes:[60,35],
+        });
+
+        set_interaction();
+
+        var static_url = '{{ STATIC_URL }}';
+        initial_overview(start)
+
+    </script>
+</body>
+</html>
