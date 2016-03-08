@@ -11,6 +11,15 @@ from __future__ import unicode_literals
 
 from django.db import models
 
+class Catetopic(models.Model):
+    pid = models.ForeignKey('Profile', db_column='pid', blank=True, null=True)
+    tid = models.IntegerField(blank=True, null=True)
+    l_w = models.FloatField(blank=True, null=True)
+    g_w = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'catetopic'
 
 class DjangoContentType(models.Model):
     app_label = models.CharField(max_length=100)
@@ -21,7 +30,6 @@ class DjangoContentType(models.Model):
         db_table = 'django_content_type'
         unique_together = (('app_label', 'model'),)
 
-
 class DjangoMigrations(models.Model):
     app = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
@@ -30,7 +38,6 @@ class DjangoMigrations(models.Model):
     class Meta:
         managed = False
         db_table = 'django_migrations'
-
 
 class DjangoSession(models.Model):
     session_key = models.CharField(primary_key=True, max_length=40)
@@ -41,24 +48,36 @@ class DjangoSession(models.Model):
         managed = False
         db_table = 'django_session'
 
-
 class Itemneigh(models.Model):
-    mid = models.IntegerField(primary_key=True)
+    id = models.CharField(primary_key=True, max_length=20)
+    mid = models.IntegerField(blank=True, null=True)
+    tid = models.IntegerField(blank=True, null=True)
     list = models.TextField(blank=True, null=True)
+    cnt = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'itemneigh'
 
-
-class Itemtopic(models.Model):
-    mid = models.ForeignKey('Movie', db_column='mid', blank=True, null=True)
-    tid = models.ForeignKey('Topic', db_column='tid', blank=True, null=True)
-    weight = models.FloatField(blank=True, null=True)
+class Itempos(models.Model):
+    mid = models.IntegerField(primary_key=True)
+    x = models.FloatField(blank=True, null=True)
+    y = models.FloatField(blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'itemtopic'
+        db_table = 'itempos'
+
+
+class ItemtopicCut(models.Model):
+    id = models.CharField(primary_key=True, max_length=20)
+    mid = models.ForeignKey('Movie', db_column='mid', blank=True, null=True)
+    tid = models.IntegerField(blank=True, null=True)
+    weight = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'itemtopic_cut'
 
 
 class Movie(models.Model):
@@ -86,10 +105,10 @@ class Movie(models.Model):
         managed = False
         db_table = 'movie'
 
-
 class Plink(models.Model):
     mid = models.ForeignKey('Movie', db_column='mid', blank=True, null=True)
     pid = models.ForeignKey('Profile', db_column='pid', blank=True, null=True)
+    val = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -104,53 +123,3 @@ class Profile(models.Model):
     class Meta:
         managed = False
         db_table = 'profile'
-
-class Topic(models.Model):
-    tid = models.IntegerField(primary_key=True)
-    eff_num_words = models.FloatField(blank=True, null=True)
-    rank_1_docs = models.FloatField(blank=True, null=True)
-    coherence = models.FloatField(blank=True, null=True)
-    uniform_dist = models.FloatField(blank=True, null=True)
-    tokens = models.FloatField(blank=True, null=True)
-    document_entropy = models.FloatField(blank=True, null=True)
-    corpus_dist = models.FloatField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'topic'
-
-class MovieCate(models.Model):
-    mid = models.IntegerField()
-    dim = models.TextField(blank=True, null=True)
-    pids = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'movie_cate'
-
-class ItemtopicCut(models.Model):
-    mid = models.ForeignKey('Movie', db_column='mid', blank=True, null=True)
-    tid = models.ForeignKey('Topic', db_column='tid', blank=True, null=True)
-    weight = models.FloatField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'itemtopic_cut'
-
-class Itempos(models.Model):
-    mid = models.IntegerField(primary_key=True)
-    x = models.FloatField(blank=True, null=True)
-    y = models.FloatField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'itempos'
-
-class Topicdist(models.Model):
-    tid1 = models.IntegerField(blank=True, null=True)
-    tid2 = models.IntegerField(blank=True, null=True)
-    dist = models.FloatField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'topicdist'

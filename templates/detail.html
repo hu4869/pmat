@@ -1,1 +1,28 @@
-<img src="{{ poster }}" style="width: auto; height: 100%">
+<div class="wrap">
+<section class="container">
+  <div id="card" class="card">
+    <figure class="front">
+        <img src="{{ poster }}" style="width:50%">
+        {{ overview }}
+    </figure>
+    <figure class="back">
+        {{ title }}
+        {% for d in dims%}
+            <br>
+            <div class="title">{{ d.key }}</div>
+            <div class="content">
+            {% for m in d.val %}
+                {% if m.w > 10 %}
+                    <a href="javascript(0)" data-w="{{ m.w }}" class="prolink" data-pid="{{ m.pid }}">{{ m.val }}</a>
+                {% else %}
+                    {{ m.val }}
+                {% endif %}
+                <br>
+            {% endfor %}
+            </div>
+        {% endfor %}
+    </figure>
+  </div>
+</section>
+<button id="fliper" class="fliper">fliper</button>
+</div>

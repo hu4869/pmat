@@ -5,8 +5,8 @@ var setting = {
     tids: [],
     c_index: 0,
     index: 0,
-    tid: 4,
-    mid: 60069,
+    tid: 2,
+    mid: 2617,
     m_index: {}
 }
 
@@ -18,6 +18,12 @@ var width =400,
 
 function initial_overview(callback){
         //initial overview
+    $('#overview-fliper').click(function(){
+        $('#overview-card').toggleClass('flipped')
+    });
+    $('#summary-wrap').load('topic_snap?tid='+setting.tid, function(){
+
+    });
     d3.json('overview', function(data){
         for (var i in data){
             data[i].topic = {}
@@ -64,7 +70,6 @@ function start(){
             d.unshift({ tid: -1 });
 
             setting.tids = d;
-
             var pos = 0
             for (var i in d){
                 if (d[i].tid == setting.tid){
@@ -84,7 +89,6 @@ function start(){
                 .attr('class', 'topic')
 
             $('.topic').hide()
-
             //the center trail should already been loaded
             load_items(setting.index, function(){
                 $('#topic-'+(setting.index)).show()
@@ -107,8 +111,17 @@ function start(){
 
 function load_movie_detail(){
     //load select movie details
-    $('#detail').load('detail?mid='+setting.mid, function(){
-
+    $('#detail').load('detail?mid='+setting.mid+'&tid='+setting.tid, function(){
+        // make hyperlink clickable
+        $('.prolink').click(function(){
+            $('#filter').text($(this).text())
+            $.get('filter?pid='+$(this).attr('data-pid'), function(mids){
+                $('.item')
+            })
+        })
+        $('#fliper').click(function(){
+            $('#card').toggleClass('flipped')
+        })
         // draw topic overview
         d3.select('#topic_overview')
             .html('')
@@ -165,7 +178,7 @@ function show_topic_in_overview(tid){
 function load_items(index, callback){
     //index = (index + setting.tids.length) % setting.tids.length
     var tid = setting.tids[index].tid
-    if (tid >=0 && tid in visited_topic){
+    if (tid < 0 || tid in visited_topic){
         if (callback)
             callback();
         return
@@ -228,6 +241,14 @@ var duration = 500,
     down = { direction: 'down'}
 
 function set_interaction(){
+    $( "#searchbox" ).autocomplete({
+        source: "search",
+        minLength: 2,
+        select: function( event, ui ) {
+            visit(ui.item.id)
+        }
+    });
+
     $('body').keydown(function(event){
         console.log(event.which)
         switch (event.which){
@@ -285,12 +306,15 @@ function update_topic_overview(){
     })
 }
 
-// search an item (show the topic with biggest weight)
-function visit(mid){ visit(mid, -1) }
-
 // keep the source topic
 function visit(mid, tid){
-    setting = {
+    if (tid == undefined)
+        $.get('get_biggest_topic?mid='+mid, function(d){
+            visit(mid, d);
+        })
+
+    else {
+        setting = {
             tids: [],
             c_index: 0,
             index: 0,
@@ -298,5 +322,10 @@ function visit(mid, tid){
             mid: mid,
             m_index: {}
         }
-    start()
+        start()
+    }
+}
+
+function visit_profile(pid){
+
 }

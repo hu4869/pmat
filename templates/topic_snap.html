@@ -1,0 +1,17 @@
+<div>
+    {% for dim in pid %}
+    <div class="column">
+        {{ dim.dim }}
+        {% for p in dim.p %}
+        <div>
+            {{ p.val }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+<div>
+    {% for m in mid %}
+    <div>{{ m.title }}</div>
+    {% endfor %}
+</div>

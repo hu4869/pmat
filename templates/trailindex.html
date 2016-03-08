@@ -17,7 +17,8 @@
 </head>
 <body>
     <div id="title">
-        Related to the Selected<div id="weight"></div>Related to the Topic
+        Search: <input id="searchbox">
+        filtering terms: <div id="filter"></div>
     </div>
     <div id="content">
         <div id="detail" style="width: 30%; float:left; height:100%"></div>
@@ -28,7 +29,19 @@
                     <div style="position: relative; width: 200%" id="wrap"></div>
                 </div>
                 <div id="overview" class="split split-horizontal">
-                    <div id="overview-wrap" style="width: 100%; height: 100%"></div>
+                    <div class="wrap">
+
+                        <section class="container">
+                            <div id="overview-card" class="card">
+                                <figure class="front" id="summmary-wrap">
+                                </figure>
+                                <figure class="back" id="overview-wrap">
+                                </figure>
+                            </div>
+                        </section>
+                        <button id="overview-fliper" class="fliper">Fliper</button>
+
+                    </div>
                 </div>
             </div>
             <div id="history" class="split"></div>

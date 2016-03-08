@@ -25,6 +25,9 @@ urlpatterns = [
     url(r'^snap', pmat.get_snap),
     url(r'^item_list', pmat.getlist),
     url(r'^clean_visit_list$', pmat.clean_visit_list),
+    url(r'^topic_snap', pmat.get_topic_snap),
+    url(r'^search', pmat.search),
+    url(r'^get_biggest_topic', pmat.biggest_topic),
 
     url(r'^topic_list$', pmat.get_topic_list),
     url(r'^overview$', pmat.get_overview),
